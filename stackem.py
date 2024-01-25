@@ -11,22 +11,33 @@ WHITE = (255,255,255)
 class Block(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 20))
-        self.image.fill(WHITE)
+        self.image = pygame.Surface((50,20))
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(0, WIDTH - self.rect.width)
-        self.rect.y = -self.rect.height
+        self.image.fill(WHITE)
+        self.rect.x = 5
+        self.rect.y = 580
+        self.speed = 5
+        self.direction = 1
 
     def update(self):
-        self.rect.y += 5
+        self.rect.x += self.speed * self.direction
+
+        if self.rect.right >= WIDTH:
+            self.direction = -1
+        
+        elif self.rect.left <= 0:
+            self.direction = 1
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mirk's Stack 'em")
 
+
 clock = pygame.time.Clock()
 
-all_sprites = pygame.sprite.Group()
-blocks = pygame.sprite.Group()
+white_block = Block()
+
+# all_sprites = pygame.sprite.Group()
+# blocks = pygame.sprite.Group()
 
 running = True
 while running:
@@ -34,17 +45,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    if random.random() < 0.02:
-        new_block = Block()
-        all_sprites.add(new_block)
-        blocks.add(new_block)
+    # if random.random() < 0.02:
+    #     new_block = Block()
+    #     all_sprites.add(new_block)
+    #     blocks.add(new_block)
+            
 
-    all_sprites.update()
+    white_block.update()
 
     screen.fill((0,0,0))
 
-    for block in blocks:
-        screen.blit(block.image, block.rect)
+    # for block in blocks:
+    screen.blit(white_block.image, white_block.rect)
 
     pygame.display.flip()
 
@@ -52,3 +64,4 @@ while running:
 
 pygame.quit()
 sys.exit()
+
