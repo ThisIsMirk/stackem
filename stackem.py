@@ -45,17 +45,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # if random.random() < 0.02:
-    #     new_block = Block()
-    #     all_sprites.add(new_block)
-    #     blocks.add(new_block)
-            
-
     white_block.update()
 
     screen.fill((0,0,0))
 
-    # for block in blocks:
     screen.blit(white_block.image, white_block.rect)
 
     pygame.display.flip()
