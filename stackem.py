@@ -16,17 +16,31 @@ class Block(pygame.sprite.Sprite):
         self.image.fill(WHITE)
         self.rect.x = 5
         self.rect.y = 580
-        self.speed = 5
+        self.speed = 40
         self.direction = 1
+        self.move_counter = 0
+        self.stopped = False
 
     def update(self):
-        self.rect.x += self.speed * self.direction
+        if not self.stopped:
+            self.move_counter += abs(self.speed * self.direction)
 
-        if self.rect.right >= WIDTH:
-            self.direction = -1
-        
-        elif self.rect.left <= 0:
-            self.direction = 1
+            if self.move_counter >= 200:  # Adjust this threshold as needed
+                self.rect.x += self.speed * self.direction
+                self.move_counter = 0  # Reset the move counter
+
+            if self.rect.right >= WIDTH:
+                self.direction = -1
+            
+            elif self.rect.left <= 0:
+                self.direction = 1
+    
+    def stop(self):
+        self.stopped = True
+
+    def start(self):
+        self.stopped = False
+
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mirk's Stack 'em")
@@ -44,6 +58,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                white_block.stop()
+
 
     white_block.update()
 
